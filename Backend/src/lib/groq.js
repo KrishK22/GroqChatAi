@@ -8,30 +8,28 @@ const client = new Groq({
 });
 
 
-const text = "hello, dear i hope you are fine at that place , if not please connect me through mail waiting for your response  ";
-const lang = "french";
-const originalLangauage = "english"
-let translatedText = '';
 
-const prompt = `Translate the following ${originalLangauage} text to ${lang}. Return ONLY a JSON object like this: { "translated": "<translated_text>" }. No other explanation. Text: "${text}"`;
 
-export async function Translation(lang, text) {
-    const chatCompletion = await client.chat.completions.create({
-        messages: [{ role: 'user', content: prompt }],
-        model: 'llama3-8b-8192',
-    });
-
-    const content = chatCompletion.choices[0].message.content;
+export async function Translation(text, lang) {
+    const prompt = `Translate the following text to ${lang}: "${text}".
+    Return ONLY a JSON object in this exact format:
+    {
+        "${lang}": "translated text here"
+    }
+    Do not include any additional text, explanations, or formatting.`;
 
     try {
+        const chatCompletion = await client.chat.completions.create({
+            messages: [{ role: 'user', content: prompt }],
+            model: 'llama3-8b-8192',
+        });
+
+        const content = chatCompletion.choices[0].message.content;
         const parsed = JSON.parse(content);
-        // console.log(parsed);
-        return parsed
+        // console.log(typeof parsed, parsed)
+        return parsed;
     } catch (error) {
-        console.error("❌ Failed to parse JSON:", error);
-        console.log("Raw output:", content);
+        console.error("Translation error:", error);
+        return { [lang]: text }; // Return original text if translation fails
     }
 }
-
-
-
