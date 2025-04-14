@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'en'
     }],
+    myContacts: [{
+        type: Object,
+    }],
     selectedLanguage: {
         type: String,
         default: 'en'

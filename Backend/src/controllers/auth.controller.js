@@ -1,6 +1,7 @@
 import userModel from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import { generateToken } from '../lib/generateToken.js';
+import { json } from 'express';
 
 
 export const signup = async (req, res) => {
@@ -109,6 +110,24 @@ export const login = async (req, res) => {
         }
     }
 };
+
+export const checkAuth = (req, res) => {
+    try {
+        const userId = req.user._id;
+        if (!userId) {
+            res.status(400).json({
+                message: "unAuthorized"
+            })
+        }
+        res.status(201).json({
+            message: "authenticated"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+}
 
 export const logout = (req, res) => {
     try {
