@@ -91,7 +91,8 @@ export const login = async (req, res) => {
                 email: checkUser.email,
                 fullName: checkUser.fullName,
                 profilePic: checkUser.profilePic,
-                language: checkUser.language
+                language: checkUser.language,
+                selectedLanguage: checkUser.selectedLanguage
             }
         });
     } catch (error) {
