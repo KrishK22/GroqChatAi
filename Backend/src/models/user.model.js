@@ -24,7 +24,11 @@ const userSchema = new mongoose.Schema({
     language: [{
         type: String,
         default: 'en'
-    }]
+    }],
+    selectedLanguage: {
+        type: String,
+        default: 'en'
+    }
 },
     { timestamps: true }
 )
