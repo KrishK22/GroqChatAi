@@ -114,13 +114,15 @@ export const login = async (req, res) => {
 export const checkAuth = (req, res) => {
     try {
         const userId = req.user._id;
+        const user = req.user;
         if (!userId) {
             res.status(400).json({
                 message: "unAuthorized"
             })
         }
         res.status(201).json({
-            message: "authenticated"
+            message: "authenticated",
+            user: user
         })
     } catch (error) {
         res.status(500).json({

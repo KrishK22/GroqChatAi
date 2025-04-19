@@ -13,4 +13,4 @@ router.patch('/profile-pic', protectedRoute, profilePicUpdate)
 
 
 
-export default router
+export default router   
