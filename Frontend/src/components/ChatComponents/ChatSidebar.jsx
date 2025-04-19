@@ -6,44 +6,29 @@ const DEFAULT_PROFILE_PIC = "https://ui-avatars.com/api/?background=random"
 
 const ChatSidebar = () => {
   const emailAddContactRef = useRef()
-  const { AddContact, authUser, contacts, setContacts } = useAuthStore()
+  const { AddContact, authUser, contacts, setContacts, checkAuth } = useAuthStore()
   const { selectedUser, setSelectedUser } = useMessageAuth()
-  const [isAddingContact, setIsAddingContact] = useState(false)
-  const [localContacts, setLocalContacts] = useState([])
 
-  // Sync local contacts with store contacts
-  useEffect(() => {
-    setLocalContacts(contacts)
-  }, [contacts])
 
-  // Initial sync with authUser contacts
   useEffect(() => {
-    if (authUser?.user?.myContacts) {
-      setLocalContacts(authUser.user.myContacts)
-      setContacts(authUser.user.myContacts)
-    }
-  }, [authUser, setContacts])
+    checkAuth()
+  }, [])
+
 
   const handleAddContact = async () => {
-    const email = emailAddContactRef.current.value
-    if (email && !isAddingContact) {
-      try {
-        setIsAddingContact(true)
-        await AddContact(email)
-        emailAddContactRef.current.value = ''
-      } finally {
-        setIsAddingContact(false)
-      }
-    }
+    const contact = emailAddContactRef.current.value
+    // setContacts(contact)
+    await AddContact(contact)
+    emailAddContactRef.current.value = ''
   }
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !isAddingContact) {
+    if (e.key === 'Enter') {
       handleAddContact()
     }
+
   }
 
-  console.log("Selected User ID:", selectedUser?._id)
 
 
   return (
@@ -67,47 +52,56 @@ const ChatSidebar = () => {
                   placeholder="Email Address"
                   className="input input-bordered w-full"
                   ref={emailAddContactRef}
-                  disabled={isAddingContact}
                   onKeyPress={handleKeyPress}
                 />
               </li>
               <li className="flex justify-end">
                 <button
-                  className={`btn btn-sm btn-primary mt-2 ${isAddingContact ? 'loading' : ''}`}
+                  className={`btn btn-sm btn-primary mt-2 `}
                   onClick={handleAddContact}
-                  disabled={isAddingContact}
                 >
-                  {isAddingContact ? 'Adding...' : 'Add'}
+                  Add
                 </button>
               </li>
             </ul>
           </div>
         </div>
 
+
         <div className='space-y-2 overflow-auto'>
-          {localContacts.map((contact, index) => {
-            return (
-              <div key={index} className="card card-compact bg-base-200 hover:bg-primary hover:text-primary-content transition duration-200 cursor-pointer" onClick={() => setSelectedUser(contact)}>
-                <div className="card-body flex flex-row items-center gap-4 py-3">
-                  <div className="avatar online">
-                    <div className="w-10 rounded-full">
-                      <img
-                        src={contact.profilePic || `${DEFAULT_PROFILE_PIC}&name=${encodeURIComponent(contact?.fullName || 'U')}`}
-                        alt={contact.fullName || 'User'}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = `${DEFAULT_PROFILE_PIC}&name=${encodeURIComponent(contact?.fullName?.[0] || 'U')}`;
-                        }}
-                      />
+
+
+
+
+          {
+            (!contacts || contacts.length === 0) ? (
+              <div className="text-center text-gray-500">
+                No contacts found. Add a contact to start chatting!
+              </div>
+            ) :
+              (contacts.map((contact, index) => {
+                return (
+                  <div key={index} className="card card-compact bg-base-200 hover:bg-primary hover:text-primary-content transition duration-200 cursor-pointer" onClick={() => (selectedUser?._id === contact._id ? setSelectedUser(null) : setSelectedUser(contact))} >
+                    <div className="card-body flex flex-row items-center gap-4 py-3">
+                      <div className="avatar online">
+                        <div className="w-10 rounded-full">
+                          <img
+                            src={contact.profilePic || `${DEFAULT_PROFILE_PIC}&name=${encodeURIComponent(contact?.fullName || 'U')}`}
+                            alt={contact.fullName || 'User'}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = `${DEFAULT_PROFILE_PIC}&name=${encodeURIComponent(contact?.fullName?.[0] || 'U')}`;
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-base">{contact.fullName || 'Unknown User'}</h3>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-base">{contact.fullName || 'Unknown User'}</h3>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+                )
+              }))}
         </div>
       </div>
     </>

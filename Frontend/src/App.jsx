@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
+
 import Navbar from './components/Navbar'
 import SignupPage from './pages/SignupPage'
 import ProfilePage from './pages/ProfilePage'
 import LoginPage from './pages/LoginPage'
-import ChatBox from './components/ChatComponents/ChatBox'
-import { Navigate, Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import { useAuthStore } from './store/useAuthStore'
-import { Toaster } from 'react-hot-toast'
 
 const App = () => {
-  const { authUser,checkAuth } = useAuthStore()
+
+  const { authUser, checkAuth } = useAuthStore()
   useEffect(() => {
     checkAuth()
   }, [checkAuth])

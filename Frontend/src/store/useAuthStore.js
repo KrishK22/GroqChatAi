@@ -12,9 +12,10 @@ export const useAuthStore = create((set, get) => ({
     updatedContact: null,
     contacts: [],
 
-    setContacts: (contacts) => {
-        set({ contacts: contacts || [] })
-    },
+    // setContacts: (contacts) => {
+    //     set({ contacts: contacts || [] })
+    // },
+
 
     checkAuth: async () => {
         set({ isCheckingAuth: true })
@@ -82,20 +83,30 @@ export const useAuthStore = create((set, get) => ({
         }
     },
 
+    setContacts: (contact) => set((state) => ({
+        contacts: [...state.contacts, contact]
+    })),
     AddContact: async (email) => {
         try {
             const res = await axiosInstance.patch('/contacts/add-new-contact', { email })
-            if (res.data && res.data.user) {
-                const updatedContacts = res.data.user.myContacts || []
-
-                // Update both authUser and contacts immediately
+            console.log("hu", res)
+            if (res.data && res.data.updatedContact) {
+                const updatedContacts = res.data.updatedContact.myContacts || []
+                // set((state) => ({
+                //     authUser: {
+                //         ...state.authUser,
+                //         user: res.data.user
+                //     },
+                //     contacts: updatedContacts
+                // }))
                 set((state) => ({
                     authUser: {
                         ...state.authUser,
-                        user: res.data.user
+                        user: res.data.updatedContact
                     },
                     contacts: updatedContacts
                 }))
+
 
                 if (res.data.updatedContact?.fullName) {
                     toast.success(`${res.data.updatedContact.fullName} added in your contacts`)
@@ -103,11 +114,9 @@ export const useAuthStore = create((set, get) => ({
                     toast.success('Contact added successfully')
                 }
 
-                // Force a refresh of contacts to ensure we have the latest data
                 const { checkAuth } = get()
                 const freshContacts = await checkAuth()
 
-                // Only update if we got new contacts
                 if (freshContacts && freshContacts.length > 0) {
                     set({ contacts: freshContacts })
                 }

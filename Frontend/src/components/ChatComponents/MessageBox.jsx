@@ -4,9 +4,7 @@ import { useAuthStore } from '../../store/useAuthStore'
 
 const MessageBox = () => {
   const inputRef = useRef()
-  const { sendMessage } = useMessageAuth()
-  const { selectedUser } = useMessageAuth()
-  const [isSending, setIsSending] = useState(false)
+  const { selectedUser, sendMessage } = useMessageAuth()
 
   const handleButton = async () => {
     const input = inputRef.current.value.trim()

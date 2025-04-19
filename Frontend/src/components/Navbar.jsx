@@ -25,7 +25,7 @@ function Navbar() {
     <div className="fixed top-0 right-0 w-full z-50">
       <div className="navbar bg-base-100  flex justify-center items-center border-b  border-b-base-300  top-0  shadow backdrop-blur-md  ">
         <div className="flex-1">
-          <Link to="/" className="btn btn-ghost normal-case text-xl font-bold text-primary">
+          <Link to="/" className="btn btn-ghost normal-case text-xl font-bold text-primary" >
             GroqChat
           </Link>
         </div>

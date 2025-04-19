@@ -3,7 +3,6 @@ import { useMessageAuth } from '../../store/useMessageStore'
 
 const ChatHeader = () => {
   const { selectedUser } = useMessageAuth()
-  // console.log(selectedUser)
   const DEFAULT_PROFILE_PIC = "https://ui-avatars.com/api/?background=random"
 
   return (
