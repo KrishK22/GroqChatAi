@@ -2,6 +2,7 @@ import messageModel from '../models/message.model.js'
 import userModel from '../models/user.model.js'
 import { Types } from 'mongoose'
 import { Translation } from '../lib/groq.js';
+import { io, getReceiverSocketId, emitMessageToUser } from '../lib/socket.js';
 
 export const sendMessageRoute = async (req, res) => {
     try {
@@ -9,7 +10,6 @@ export const sendMessageRoute = async (req, res) => {
         const receiverId = req.params.id;
         const langSelected = req.user.selectedLanguage
         const { originalText } = req.body;
-
 
         if (!originalText) {
             res.status(400).json({
@@ -25,31 +25,32 @@ export const sendMessageRoute = async (req, res) => {
             return;
         }
 
+        let msg;
         if (langSelected === 'en') {
-            const msg = await messageModel.create({
+            msg = await messageModel.create({
                 senderId,
                 receiverId: new Types.ObjectId(receiverId),
                 originalText
             });
-
-            res.status(200).json({
-                message: "Message sent successfully",
-                msg
-            });
         } else {
             const trans = await Translation(originalText, "en")
-            const msg = await messageModel.create({
+            msg = await messageModel.create({
                 senderId,
                 receiverId: new Types.ObjectId(receiverId),
                 originalText: trans['en']
-            })
-            res.status(200).json({
-                message: "Message send successfully",
-                msg
-            })
+            });
         }
 
+        // Emit socket event to receiver
+        emitMessageToUser(receiverId, "newMessage", msg);
+        
+        // Also emit to sender to ensure consistency
+        emitMessageToUser(senderId, "messageSent", msg);
 
+        res.status(200).json({
+            message: "Message sent successfully",
+            msg
+        });
 
     } catch (error) {
         if (error instanceof Error) {
@@ -102,7 +103,7 @@ export const getMessages = async (req, res) => {
                 { senderId: receiverId, receiverId: userId },
                 { senderId: userId, receiverId: receiverId }
             ]
-        });
+        }).sort({ createdAt: 1 });
 
         if (langSelected === "en") {
             return res.status(200).json(orgMessage);

@@ -21,7 +21,7 @@ export async function Translation(text, lang) {
     try {
         const chatCompletion = await client.chat.completions.create({
             messages: [{ role: 'user', content: prompt }],
-            model: 'llama3-8b-8192',
+            model: 'meta-llama/llama-4-scout-17b-16e-instruct',
         });
 
         const content = chatCompletion.choices[0].message.content;

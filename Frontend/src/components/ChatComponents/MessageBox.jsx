@@ -1,19 +1,29 @@
 import React, { useRef, useState } from 'react'
 import { useMessageAuth } from '../../store/useMessageStore'
 import { useAuthStore } from '../../store/useAuthStore'
+import toast from 'react-hot-toast'
 
 const MessageBox = () => {
   const inputRef = useRef()
-  const { selectedUser, sendMessage } = useMessageAuth()
+  const { selectedUser, sendMessage, messages } = useMessageAuth()
+  const [isSending, setIsSending] = useState(false)
 
   const handleButton = async () => {
     const input = inputRef.current.value.trim()
+    
+    if (!input || !selectedUser?._id) {
+      return
+    }
 
     try {
+      setIsSending(true)
       await sendMessage(input, selectedUser._id)
       inputRef.current.value = ''
     } catch (error) {
       console.error('Error sending message:', error)
+      toast.error('Failed to send message. Please try again.')
+    } finally {
+      setIsSending(false)
     }
   }
 
@@ -43,6 +53,7 @@ const MessageBox = () => {
           className="input input-bordered input-md w-full rounded-full"
           ref={inputRef}
           onKeyPress={handleKeyPress}
+          disabled={isSending}
         />
 
         {/* Attachment Button (optional) */}
@@ -60,18 +71,21 @@ const MessageBox = () => {
 
         {/* Send Button */}
         <button
-          className={`btn btn-primary btn-circle `}
+          className={`btn btn-primary btn-circle ${isSending ? 'loading' : ''}`}
           onClick={handleButton}
+          disabled={isSending}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          {!isSending && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          )}
         </button>
       </div>
     </div>

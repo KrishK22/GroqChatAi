@@ -1,18 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useMessageAuth } from '../../store/useMessageStore'
 import { useAuthStore } from '../../store/useAuthStore'
 
 const DEFAULT_PROFILE_PIC = "https://ui-avatars.com/api/?background=random"
 
 const CharArea = () => {
-  const { selectedUser, getMessages, messages } = useMessageAuth()
+  const { selectedUser, getMessages, messages, subscribeToMessages, unSubscribeToMessages } = useMessageAuth()
   const { authUser } = useAuthStore()
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   useEffect(() => {
     if (selectedUser?._id) {
       getMessages(selectedUser._id)
+      subscribeToMessages()
+      return () => unSubscribeToMessages();
     }
-  }, [selectedUser?._id, getMessages])
+  }, [selectedUser?._id, getMessages, subscribeToMessages, unSubscribeToMessages])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   if (!selectedUser) {
     return (
@@ -66,6 +77,7 @@ const CharArea = () => {
             </div>
           );
         })}
+        <div ref={messagesEndRef} />
       </div>
     </>
   )

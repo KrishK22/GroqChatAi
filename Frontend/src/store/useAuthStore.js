@@ -1,6 +1,7 @@
 import { axiosInstance } from "../lib/utils";
 import { create } from 'zustand'
 import toast, { ToastBar } from 'react-hot-toast'
+import { io } from "socket.io-client";
 
 const BASE_URL = "http://localhost:3000"
 
@@ -11,6 +12,7 @@ export const useAuthStore = create((set, get) => ({
     isLogginIn: false,
     updatedContact: null,
     contacts: [],
+    socket: null,
 
     // setContacts: (contacts) => {
     //     set({ contacts: contacts || [] })
@@ -26,6 +28,7 @@ export const useAuthStore = create((set, get) => ({
                 authUser: res.data,
                 contacts: userContacts
             })
+            get().connectSocket()
             return userContacts
         } catch (error) {
             console.log('error in checkauth frontend ', error)
@@ -45,6 +48,7 @@ export const useAuthStore = create((set, get) => ({
                 authUser: res.data,
                 contacts: userContacts
             })
+            get().connectSocket()
             toast.success("Signed Up successfully")
         } catch (error) {
             toast.error(error.response.data.message)
@@ -63,6 +67,7 @@ export const useAuthStore = create((set, get) => ({
                 authUser: res.data,
                 contacts: userContacts
             })
+            get().connectSocket()
             toast.success("Logged In")
         } catch (error) {
             toast.error(error.response.data.message)
@@ -76,6 +81,7 @@ export const useAuthStore = create((set, get) => ({
         try {
             await axiosInstance.post('/auth/logout')
             set({ authUser: null, contacts: [] })
+            get().disConnectSocket()
             toast.success("Logged Out Successfully")
         } catch (error) {
             toast.error(error.response.data.message)
@@ -134,5 +140,25 @@ export const useAuthStore = create((set, get) => ({
             toast.error(error?.response?.data?.message || 'Failed to add contact')
             console.log(`Error in updatlANG  `, error)
         }
+    },
+
+    connectSocket: () => {
+        const { authUser } = get()
+        if (!authUser || get().socket?.connected) return
+        const socket = io(BASE_URL, {
+            query: {
+                userId: authUser._id
+            }
+        })
+        socket.connect()
+        set({ socket: socket })
+
+    },
+    disConnectSocket: () => {
+        if (get().socket?.connected) get().socket.disconnect()
     }
+
+
+
+
 }))

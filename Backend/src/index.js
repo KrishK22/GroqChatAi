@@ -7,9 +7,10 @@ import cookieParser from 'cookie-parser'
 import coreLogicRoute from './routes/coreLogic.route.js'
 import messageRoute from './routes/message.route.js'
 import contactRoute from './routes/contact.routes.js'
+import { app, server } from './lib/socket.js'
 dotenv.config()
 const port = process.env.PORT
-const app = express()
+
 
 app.use(cookieParser())
 app.use(express.json())
@@ -25,7 +26,7 @@ app.use('/api/contacts', contactRoute)
 
 
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Backend listening on port - ${port}`)
     connectDB()
 })
