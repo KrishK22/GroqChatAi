@@ -23,14 +23,14 @@ const userSchema = new mongoose.Schema({
     },
     language: [{
         type: String,
-        default: 'en'
+        default: 'English'
     }],
     myContacts: [{
         type: Object,
     }],
     selectedLanguage: {
         type: String,
-        default: 'en'
+        default: 'English'
     }
 },
     { timestamps: true }

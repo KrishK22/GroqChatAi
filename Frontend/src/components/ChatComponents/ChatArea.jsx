@@ -4,7 +4,7 @@ import { useAuthStore } from '../../store/useAuthStore'
 
 const DEFAULT_PROFILE_PIC = "https://ui-avatars.com/api/?background=random"
 
-const CharArea = () => {
+const ChatArea = () => {
   const { selectedUser, getMessages, messages, subscribeToMessages, unSubscribeToMessages } = useMessageAuth()
   const { authUser } = useAuthStore()
   const messagesEndRef = useRef(null)
@@ -15,8 +15,9 @@ const CharArea = () => {
 
   useEffect(() => {
     if (selectedUser?._id) {
-      getMessages(selectedUser._id)
       subscribeToMessages()
+      getMessages(selectedUser._id)
+      console.log("Subscribed to messages for user:", selectedUser._id, messages);
       return () => unSubscribeToMessages();
     }
   }, [selectedUser?._id, getMessages, subscribeToMessages, unSubscribeToMessages])
@@ -24,6 +25,8 @@ const CharArea = () => {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+
 
   if (!selectedUser) {
     return (
@@ -44,8 +47,7 @@ const CharArea = () => {
             ? authUser?.user?.profilePic || `${DEFAULT_PROFILE_PIC}&name=${encodeURIComponent(authUser?.user?.fullName || 'U')}`
             : selectedUser?.profilePic || `${DEFAULT_PROFILE_PIC}&name=${encodeURIComponent(selectedUser?.fullName || 'U')}`;
 
-          const selectedLanguage = authUser?.user?.selectedLanguage || 'en';
-
+          const selectedLanguage = authUser?.user?.selectedLanguage || 'English';
           return (
             <div
               key={message._id || index}
@@ -68,11 +70,16 @@ const CharArea = () => {
               <div className="chat-header text-sm font-semibold text-gray-700 mb-1">
                 {isCurrentUser ? authUser?.user?.fullName || 'You' : selectedUser?.fullName || 'User'}
                 <time className="ml-2 text-xs font-normal text-gray-500">
+
                   {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </time>
               </div>
               <div className={`chat-bubble ${isCurrentUser ? 'bg-primary text-primary-content' : 'bg-base-200 text-base-content'} max-w-xs shadow-md`}>
-                {message.translatedText?.[selectedLanguage] || message.message || "No message content"}
+                {message.translatedText?.[selectedLanguage] || message.originalText || "No message content"}
+
+
+
+                {console.log(message)}
               </div>
             </div>
           );
@@ -83,4 +90,4 @@ const CharArea = () => {
   )
 }
 
-export default CharArea
+export default ChatArea

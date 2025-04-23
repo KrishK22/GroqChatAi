@@ -2,7 +2,7 @@ import messageModel from '../models/message.model.js'
 import userModel from '../models/user.model.js'
 import { Types } from 'mongoose'
 import { Translation } from '../lib/groq.js';
-import { io, getReceiverSocketId, emitMessageToUser } from '../lib/socket.js';
+import { io, getReceiverSocketId } from '../lib/socket.js';
 
 export const sendMessageRoute = async (req, res) => {
     try {
@@ -26,26 +26,26 @@ export const sendMessageRoute = async (req, res) => {
         }
 
         let msg;
-        if (langSelected === 'en') {
+        if (langSelected === 'English') {
             msg = await messageModel.create({
                 senderId,
                 receiverId: new Types.ObjectId(receiverId),
                 originalText
             });
         } else {
-            const trans = await Translation(originalText, "en")
+            const trans = await Translation(originalText, "English")
             msg = await messageModel.create({
                 senderId,
                 receiverId: new Types.ObjectId(receiverId),
-                originalText: trans['en']
+                originalText: trans['English']
             });
         }
 
-        // Emit socket event to receiver
-        emitMessageToUser(receiverId, "newMessage", msg);
-        
-        // Also emit to sender to ensure consistency
-        emitMessageToUser(senderId, "messageSent", msg);
+        const receiverSocketId = getReceiverSocketId(receiverId)
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage)
+        }
+
 
         res.status(200).json({
             message: "Message sent successfully",

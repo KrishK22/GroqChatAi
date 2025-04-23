@@ -143,15 +143,22 @@ export const useAuthStore = create((set, get) => ({
     },
 
     connectSocket: () => {
-        const { authUser } = get()
-        if (!authUser || get().socket?.connected) return
-        const socket = io(BASE_URL, {
-            query: {
-                userId: authUser._id
-            }
-        })
-        socket.connect()
-        set({ socket: socket })
+        try {
+
+            const { authUser } = get()
+            if (!authUser || get().socket?.connected) return
+            const socket = io(BASE_URL, {
+                query: {
+                    userId: authUser._id
+                }
+            })
+            socket.connect()
+            set({ socket: socket })
+            console.log("connected")
+        } catch (error) {
+            console.log("Error in connection", error)
+
+        }
 
     },
     disConnectSocket: () => {

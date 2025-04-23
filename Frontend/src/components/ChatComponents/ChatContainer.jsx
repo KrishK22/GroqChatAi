@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import ChatHeader from './ChatHeader'
-import ChatArea from './CharArea'
+import ChatArea from './ChatArea'
 import MessageBox from './MessageBox'
 import NoChat from './NoChat'
 

@@ -36,38 +36,38 @@ export const useMessageAuth = create((set, get) => ({
         const socket = useAuthStore.getState().socket;
 
         if (!socket) {
-            console.error('Socket not connected')
+            console.log('Socket not connected')
             return
         }
 
         // Listen for new messages from other users
         socket.on('newMessage', (newMessage) => {
             console.log('Received new message:', newMessage)
-            set((state) => ({
-                messages: [...state.messages, newMessage]
-            }))
+            // set((state) => ({
+            //     messages: [...state.messages, newMessage]
+            // }))
+            set({ messages: [...get().messages, newMessage] })
         })
 
         // Listen for confirmation of sent messages
-        socket.on('messageSent', (sentMessage) => {
-            console.log('Message sent confirmation:', sentMessage)
-            // Check if message already exists to avoid duplicates
-            set((state) => {
-                const messageExists = state.messages.some(msg => msg._id === sentMessage._id)
-                if (messageExists) {
-                    return state
-                }
-                return {
-                    messages: [...state.messages, sentMessage]
-                }
-            })
-        })
+        // socket.on('messageSent', (sentMessage) => {
+        //     console.log('Message sent confirmation:', sentMessage)
+        //     // Check if message already exists to avoid duplicates
+        //     set((state) => {
+        //         const messageExists = state.messages.some(msg => msg._id === sentMessage._id)
+        //         if (messageExists) {
+        //             return state
+        //         }
+        //         return {
+        //             messages: [...state.messages, sentMessage]
+        //         }
+        //     })
+        // })
     },
     unSubscribeToMessages: () => {
         const socket = useAuthStore.getState().socket
         if (socket) {
             socket.off('newMessage')
-            socket.off('messageSent')
         }
     }
 }))
