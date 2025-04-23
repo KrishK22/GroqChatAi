@@ -1,8 +1,8 @@
 ![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
 
-# 🚀 Project Title
+# 🚀 GroqChatAi
 
-> A one-line tagline or mission statement for your project.
+> A realtime MultiLingual Chat Application 
 
 ---
 
@@ -28,9 +28,9 @@ Enables real-time communication between users who speak different native languag
 - Krish Kumar 
 
 ### Links: 
- Github-https://github.com/KrishK22/GroqChatAi
- LinkedIn-https://www.linkedin.com/posts/krish-kumar-a6214730a_hackhazards-hackhazards2025-innovationinaction-activity-7315800102932017153-FYd4?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE6v5SoBlkjBoZCxAoZa4AS98QvrZC7gqWQ
- X/Twitter-https://x.com/krishku06/status/1910718961647313266
+ Github-https://github.com/KrishK22/GroqChatAi <br>
+ LinkedIn-https://www.linkedin.com/posts/krish-kumar-a6214730a_hackhazards-hackhazards2025-innovationinaction-activity-7315800102932017153-FYd4?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE6v5SoBlkjBoZCxAoZa4AS98QvrZC7gqWQ <br>
+ X/Twitter-https://x.com/krishku06/status/1910718961647313266 <br>
 
 ### Approach:  
 - I chose this problem statement as it aligned with my prior experience and offered an exciting challenge—integrating dynamic language translation using the Groq API for the first time.
@@ -74,9 +74,9 @@ Enables real-time communication between users who speak different native languag
 
 ## ✅ Tasks & Bonus Checklist
 
-- [ ] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** ✅ 
-- [ ] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  ✅
-- [ ] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)** ✅
+- [✅] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** 
+- [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  
+- [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)** 
 
 
 ---
@@ -85,8 +85,7 @@ Enables real-time communication between users who speak different native languag
 
 ### Requirements:
 - Node.js 
-- API Keys (if any)
-- .env file setup 
+- .env file setup <br>
     PORT=3000<br>
     JWT_SECRET=groqchatapp124 <br>
     MONGODB_URI=mongodb://localhost:27017/GroqChatAi <br>
@@ -142,7 +141,7 @@ List improvements, extensions, or follow-up features:
 
 ## 🏁 Final Words
 
-Share your hackathon journey — challenges, learnings, fun moments, or shout-outs!
+
 Started my journey in development in 1st semester and with days and night of dealing with lot of confusion, 404 error in my head 
 it was difficult for me to sit for a project and complete it end-to-end facing new challenges .. to be honest hackazard exciting rewards helped 
 me motivated throughout the hackathon timeline to deal with challenges and not to leave the project in between . 
