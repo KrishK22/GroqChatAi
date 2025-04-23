@@ -57,7 +57,7 @@ Enables real-time communication between users who speak different native languag
 
 
 ### Sponsor Technologies Used (if any):
-- [ ] **Groq:** Used Groq to translate messages into the user's selected native language, enabling seamless multilingual communication.
+- [✅] **Groq:** Used Groq to translate messages into the user's selected native language, enabling seamless multilingual communication.
 ---
 
 ## ✨ Key Features
