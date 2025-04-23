@@ -87,14 +87,15 @@ Enables real-time communication between users who speak different native languag
 - Node.js 
 - API Keys (if any)
 - .env file setup 
-    PORT=3000
-    JWT_SECRET=groqchatapp124
-    MONGODB_URI=mongodb://localhost:27017/GroqChatAi
-    CLOUDINARY_CLOUD_NAME=dqltvkb0y
-    CLOUDINARY_API_KEY=396575495639882
-    CLOUDINARY_API_SECRET=5H7dZVn0yA5TM90B_5tn-mlyJMo
-    GROQ_API_KEY = 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
-    GROK_API_NAME = test
+    PORT=3000<br>
+    JWT_SECRET=groqchatapp124 <br>
+    MONGODB_URI=mongodb://localhost:27017/GroqChatAi <br>
+    CLOUDINARY_CLOUD_NAME=dqltvkb0y <br>
+    CLOUDINARY_API_KEY=396575495639882 <br>
+    CLOUDINARY_API_SECRET=5H7dZVn0yA5TM90B_5tn-mlyJMo  <br>
+    GROQ_API_KEY = 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    <br>
+    GROK_API_NAME = test  <br>
+
 
 ### Local Setup:
 ```bash
@@ -109,18 +110,15 @@ cd frontend
 npm install
 
 # Start backend server
-![alt text](image-1.png)
 cd backend
 npm run dev
 
 #Start Frontend 
-![alt text](image-2.png)
 cd frontend
 npm run dev
 ```
 
 .env should be in root directory of backend folder
-![alt text](image.png)
 
 ---
 
@@ -128,22 +126,26 @@ npm run dev
 
 List improvements, extensions, or follow-up features:
 
-- 📈 More integrations  
-- 🛡️ Security enhancements  
-- 🌐 Localization / broader accessibility  
+- 📈 Real time Voice translation features using AI
+- 🛡️ Security enhancements: Making Chats End-to-End Encrypted 
+-  Ui optimization 
+- EnhanceMent in Real time communication in more cleaner way
 
 ---
 
 ## 📎 Resources / Credits
 
-- APIs or datasets used  
-- Open source libraries or tools referenced  
-- Acknowledgements  
+- groq Api for allowing me to translate messages  
+- Thanking @hackazard's organizing team for organizing this event which lead me to build my first end-to-end full stack project :)
 
 ---
 
 ## 🏁 Final Words
 
 Share your hackathon journey — challenges, learnings, fun moments, or shout-outs!
+Started my journey in development in 1st semester and with days and night of dealing with lot of confusion, 404 error in my head 
+it was difficult for me to sit for a project and complete it end-to-end facing new challenges .. to be honest hackazard exciting rewards helped 
+me motivated throughout the hackathon timeline to deal with challenges and not to leave the project in between . 
+It was exciting to be part of this event which led me get my first full stack project in my 1st year itself
 
 ---
